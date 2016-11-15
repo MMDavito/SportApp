@@ -17,7 +17,8 @@ public class ConnectionFactory {
     public static Connection make(String server) throws Exception{
         if(server.equals("testserver")){
         Class.forName("com.mysql.jdbc.Driver");
-        Connection connection = (Connection)DriverManager.getConnection("jdbc:/10.16.58.152/sportapp","root","");
+        Connection connection = (Connection)DriverManager.getConnection("jdbc:mysql://10.16.58.152/sportapp","root","");
+            System.out.println("Kommer jag hit");
         return connection;
         }
         return null;

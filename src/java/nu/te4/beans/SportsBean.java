@@ -6,23 +6,47 @@
 package nu.te4.beans;
 
 import com.mysql.jdbc.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
+import javax.ejb.Stateless;
+import javax.json.Json;
 import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import nu.te4.support.ConnectionFactory;
 
-@Named
-@RequestScoped
-public class SportsBean {
-    
-    public JsonArray getGames(){
-        try {
-                    Connection connection = ConnectionFactory.make("testserver");
-                    Statement stmt = connection.createStatement();
 
+@Stateless
+public class SportsBean {
+
+    public JsonArray getGames() {
+        try {
+            Connection connection = ConnectionFactory.make("testserver");
+            Statement stmt = connection.createStatement();
+            String sql = "SELECT*FROM matcher";
+            ResultSet data = stmt.executeQuery(sql);
+            //arraybuilder
+            JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+            while (data.next()) {
+                int id = data.getInt("id");
+                int hl = data.getInt("hemmalag");
+                int bl = data.getInt("bortalag");
+                int hp = data.getInt("poanghemma");
+                int bp = data.getInt("poangbort");
+
+                jsonArrayBuilder.add(Json.createObjectBuilder()
+                        .add("id", id)
+                        .add("hemmalag", hl)
+                        .add("bortalag", bl)
+                        .add("poanghemma", hp)
+                        .add("poangbort", bp).build());
+
+            }
+            connection.close();
+            
+            return jsonArrayBuilder.build();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return null;
     }
 }
