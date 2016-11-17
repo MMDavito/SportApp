@@ -101,7 +101,7 @@ public class SportsBean {
         }
     }
 
-    public boolean changeGame(String body, int id) {
+    public boolean changeGame(int id,String body) {
         JsonReader jsonReader = Json.createReader(new StringReader(body));
         System.out.println(body);
         JsonObject data = jsonReader.readObject();
@@ -133,8 +133,8 @@ public class SportsBean {
             return false;
         }
         }else{
-            System.out.println("Fuck");
-                    return false;}
-    
+            System.out.println("Fuck, tomt?");
+                    return false;}    
     }
+    
 }
