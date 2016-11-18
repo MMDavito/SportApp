@@ -5,9 +5,14 @@
  */
 package nu.te4.support;
 
+import com.mysql.jdbc.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Base64;
 import java.util.List;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -29,7 +34,7 @@ public class User {
             System.out.println(username);
             System.out.println(password);
             //temp för "test"
-            if (username.equals("David") && password.equals("Carlsson")) {
+            if (checkUser(username, password)) {
                 return true;
             }
         } catch (Exception e) {
@@ -38,4 +43,37 @@ public class User {
         return false;
     }
 
+    public static boolean createUser(String username, String password) {
+        String hashedPW = BCrypt.hashpw(password, BCrypt.gensalt());
+        try {
+            Connection con = ConnectionFactory.make("testserver");
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO users VALUES(?,?);");
+            stmt.setString(1, username);
+            stmt.setString(2, hashedPW);
+            stmt.executeUpdate();
+            con.close();
+            return true;
+        } catch (Exception e) {
+            System.out.println("ERROR "+e.getMessage());
+        }
+        return false;
+    }
+    public static boolean checkUser(String username, String password){
+        try {
+            Connection con = ConnectionFactory.make("testserver");
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM users WHERE username = ?");
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            
+            rs.next();
+            String hashedPW =rs.getString("password");
+            con.close();
+                            
+                return BCrypt.checkpw(password, hashedPW);
+            
+        } catch (Exception e) {
+            System.err.println("ERROR "+e.getMessage());
+        }
+        return false;
+    }
 }
