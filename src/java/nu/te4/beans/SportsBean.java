@@ -138,4 +138,81 @@ public class SportsBean {
         }
     }
 
+    public JsonArray getTable() {
+        try {
+            Connection connection = ConnectionFactory.make("testserver");
+            Statement stmt = connection.createStatement();
+            String sql = "SELECT*FROM tabellen;";
+            ResultSet data = stmt.executeQuery(sql);
+            //arraybuilder
+            JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+            while (data.next()) {
+                String lagnamn = data.getString("lagnamn");
+                int p = data.getInt("p");
+
+                jsonArrayBuilder.add(Json.createObjectBuilder()
+                        .add("lagnamn", lagnamn)
+                        .add("p", p));
+
+            }
+            connection.close();
+
+            return jsonArrayBuilder.build();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public JsonArray getTeams() {
+        try {
+            Connection connection = ConnectionFactory.make("testserver");
+            Statement stmt = connection.createStatement();
+            String sql = "SELECT*FROM lag;";
+            ResultSet data = stmt.executeQuery(sql);
+            //arraybuilder
+            JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+            while (data.next()) {
+                int id = data.getInt("id");
+                String lag = data.getString("namn");
+
+                jsonArrayBuilder.add(Json.createObjectBuilder()
+                        .add("id", id)
+                        .add("lag", lag));
+
+            }
+            connection.close();
+
+            return jsonArrayBuilder.build();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public JsonArray getTeam(int id) {
+        try {
+            Connection con = ConnectionFactory.make("testserver");
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM tabellen "
+                    + "WHERE lagnamn = (SELECT namn FROM lag WHERE id = ?)");
+            stmt.setInt(1, id);
+            ResultSet data = stmt.executeQuery();
+            //arraybuilder
+            JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+            while (data.next()) {
+                String lag = data.getString("lagnamn");
+                int p = data.getInt("p");
+
+                jsonArrayBuilder.add(Json.createObjectBuilder()
+                        .add("lag", lag)
+                        .add("p", p));
+            }
+            con.close();
+
+            return jsonArrayBuilder.build();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 }

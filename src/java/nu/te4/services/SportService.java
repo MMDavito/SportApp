@@ -80,5 +80,45 @@ public class SportService {
         }
         return Response.status(Response.Status.CREATED).build();
     }
-    
+
+    @GET
+    @Path("table")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTable(@Context HttpHeaders httpHeaders) {
+        if (!User.authoricate(httpHeaders)) {
+            return Response.status(401).build();
+        }
+        JsonArray data = sportsbean.getTable();
+        if (data == null) {
+            return Response.serverError().build();
+        }
+        return Response.ok(data).build();
+    }
+
+    @GET
+    @Path("teams")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTeams(@Context HttpHeaders httpHeaders) {
+        if (!User.authoricate(httpHeaders)) {
+            return Response.status(401).build();
+        }
+        JsonArray data = sportsbean.getTeams();
+        if (data == null) {
+            return Response.serverError().build();
+        }
+        return Response.ok(data).build();
+    }
+
+    @GET
+    @Path("team/{id}")
+    public Response getTeam(@PathParam("id") int id, @Context HttpHeaders httpHeaders) {
+        if (!User.authoricate(httpHeaders)) {
+            return Response.status(401).build();
+        }
+        JsonArray data = sportsbean.getTeam(id);
+        if (data == null) {
+            return Response.serverError().build();
+        }
+        return Response.ok(data).build();
+    }
 }
