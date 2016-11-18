@@ -101,7 +101,7 @@ public class SportsBean {
         }
     }
 
-    public boolean changeGame(int id,String body) {
+    public boolean changeGame(int id, String body) {
         JsonReader jsonReader = Json.createReader(new StringReader(body));
         System.out.println(body);
         JsonObject data = jsonReader.readObject();
@@ -118,8 +118,8 @@ public class SportsBean {
             try {
                 Connection connection = ConnectionFactory.make("testserver");
                 PreparedStatement stmt = connection.prepareStatement("UPDATE matcher\n"
-                        + "SET VALUES(NULL,?,?,?,?)\n"
-                        + "WHERE id =?");
+                        + "SET hemmalag = ?, bortalag = ?, poanghemma = ?, poangbort = ?\n"
+                        + "WHERE id =?;");
                 stmt.setInt(1, hl);
                 stmt.setInt(2, bl);
                 stmt.setInt(3, ph);
@@ -128,13 +128,14 @@ public class SportsBean {
                 stmt.execute();
                 connection.close();
                 return true;
-            }catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
+            } catch (Exception e) {
+                System.err.println("Error: " + e.getMessage());
+                return false;
+            }
+        } else {
+            System.out.println("Fuck, tomt?");
             return false;
         }
-        }else{
-            System.out.println("Fuck, tomt?");
-                    return false;}    
     }
-    
+
 }
