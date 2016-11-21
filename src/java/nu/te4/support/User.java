@@ -31,9 +31,7 @@ public class User {
             //plocka ut anv och lösenord
             String username = userPass.substring(0, userPass.indexOf(":"));
             String password = userPass.substring(userPass.indexOf(":") + 1);
-            System.out.println(username);
-            System.out.println(password);
-            //temp för "test"
+            
             if (checkUser(username, password)) {
                 return true;
             }
