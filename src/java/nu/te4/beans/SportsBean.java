@@ -101,18 +101,17 @@ public class SportsBean {
         }
     }
 
-    public boolean changeGame(int id, String body) {
+    public boolean changeGame(String body) {
         JsonReader jsonReader = Json.createReader(new StringReader(body));
         System.out.println(body);
         JsonObject data = jsonReader.readObject();
 
-        System.out.println("fuck");
         jsonReader.close();
-
+        int id = data.getInt("id");
         int hl = data.getInt("hemmalag");
         int bl = data.getInt("bortalag");
-        int ph = data.getInt("poänghemma");
-        int pb = data.getInt("poängborta");
+        int ph = data.getInt("poanghemma");
+        int pb = data.getInt("poangborta");
         //regler
         if ((ph + pb == 3) && (hl > 0 && hl <= 10) && (bl > 0 && bl <= 10)) {
             try {

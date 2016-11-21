@@ -69,13 +69,13 @@ public class SportService {
     }
 
     @PUT
-    @Path("game/{id}")
+    @Path("game")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response changeGame(@PathParam("id") int id, String body, @Context HttpHeaders httpHeaders) {
+    public Response changeGame(String body, @Context HttpHeaders httpHeaders) {
         if (!User.authoricate(httpHeaders)) {
             return Response.status(401).build();
         }
-        if (!sportsbean.changeGame(id, body)) {
+        if (!sportsbean.changeGame(body)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         return Response.status(Response.Status.CREATED).build();
