@@ -54,31 +54,34 @@ public class SportsBean {
     }
 
     public boolean addGame(String body) {
-        System.out.println(body);
         JsonReader jsonReader = Json.createReader(new StringReader(body));
         System.out.println(body);
         JsonObject data = jsonReader.readObject();
 
-        System.out.println("fuck");
+        System.out.println(data);
         jsonReader.close();
-
+        
         int hl = data.getInt("hemmalag");
         int bl = data.getInt("bortalag");
-        int ph = data.getInt("poänghemma");
-        int pb = data.getInt("poängborta");
+        int ph = data.getInt("poanghemma");
+        int pb = data.getInt("poangborta");
+
         //regler
         if ((ph + pb == 3) && (hl > 0 && hl <= 10) && (bl > 0 && bl <= 10)) {
             try {
                 Connection connection = ConnectionFactory.make("testserver");
-                PreparedStatement stmt = connection.prepareStatement("INSERT INTO matcher VALUES(NULL,?,?,?,?");
+                PreparedStatement stmt = connection.prepareStatement("INSERT INTO matcher VALUES(NULL,?,?,?,?);");
                 stmt.setInt(1, hl);
                 stmt.setInt(2, bl);
                 stmt.setInt(3, ph);
                 stmt.setInt(4, pb);
                 stmt.executeUpdate();
-                connection.close();
+                System.out.println(stmt);
+                connection.close();                
                 return true;
             } catch (Exception e) {
+                
+                System.err.println("fuck off");
                 return false;
             }
         } else {

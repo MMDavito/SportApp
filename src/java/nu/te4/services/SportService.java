@@ -50,7 +50,7 @@ public class SportService {
         if (!User.authoricate(httpHeaders)) {
             return Response.status(401).build();
         }
-        if (sportsbean.addGame(body)) {
+        if (!sportsbean.addGame(body)) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         return Response.status(Response.Status.CREATED).build();
@@ -84,10 +84,7 @@ public class SportService {
     @GET
     @Path("table")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTable(@Context HttpHeaders httpHeaders) {
-        if (!User.authoricate(httpHeaders)) {
-            return Response.status(401).build();
-        }
+    public Response getTable() {
         JsonArray data = sportsbean.getTable();
         if (data == null) {
             return Response.serverError().build();
@@ -99,9 +96,7 @@ public class SportService {
     @Path("teams")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTeams(@Context HttpHeaders httpHeaders) {
-        if (!User.authoricate(httpHeaders)) {
-            return Response.status(401).build();
-        }
+
         JsonArray data = sportsbean.getTeams();
         if (data == null) {
             return Response.serverError().build();
@@ -112,9 +107,7 @@ public class SportService {
     @GET
     @Path("team/{id}")
     public Response getTeam(@PathParam("id") int id, @Context HttpHeaders httpHeaders) {
-        if (!User.authoricate(httpHeaders)) {
-            return Response.status(401).build();
-        }
+       
         JsonArray data = sportsbean.getTeam(id);
         if (data == null) {
             return Response.serverError().build();
