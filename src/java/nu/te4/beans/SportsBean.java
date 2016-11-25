@@ -18,9 +18,18 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import nu.te4.support.ConnectionFactory;
 
+/**
+ *
+ * @author daca97002
+ */
 @Stateless
 public class SportsBean {
 
+    /**
+     *
+     * @return returns JsonArray containing all games in database, "id": id (of game),
+     * "hemmalag": home team, "bortalag": other team, "poanghemma": points home, "poangborta": points away
+     */
     public JsonArray getGames() {
         try {
             Connection connection = ConnectionFactory.make("testserver");
@@ -53,6 +62,12 @@ public class SportsBean {
         return null;
     }
 
+    /**
+     *
+     * @param body JsonObject containing "hemmalag": hometeam,
+     * "bortalag": other team, "poanghemma": points home, "poangborta": points away
+     * @return boolean, True if success, else fail
+     */
     public boolean addGame(String body) {
         JsonReader jsonReader = Json.createReader(new StringReader(body));
         System.out.println(body);
@@ -89,6 +104,11 @@ public class SportsBean {
         }
     }
 
+    /**
+     *
+     * @param id id of game wished to delete
+     * @return boolean true if success else fail
+     */
     public boolean deleteGame(int id) {
         try {
             Connection connection = ConnectionFactory.make("testserver");
@@ -104,6 +124,12 @@ public class SportsBean {
         }
     }
 
+    /**
+     *
+     * @param body JsonObject containing "id": id (of game wished to change), "hemmalag": hometeam,
+     * "bortalag": other team, "poanghemma": points home, "poangborta": points away
+     * @return boolean, True if success, else fail
+     */
     public boolean changeGame(String body) {
         JsonReader jsonReader = Json.createReader(new StringReader(body));
         System.out.println(body);
@@ -140,6 +166,12 @@ public class SportsBean {
         }
     }
 
+    /**
+     *
+     * @return JsonArray containging all teams names and points 
+     * "lagnamn": teamname, "p": points
+     * returns null if fail
+     */
     public JsonArray getTable() {
         try {
             Connection connection = ConnectionFactory.make("testserver");
@@ -166,6 +198,11 @@ public class SportsBean {
         return null;
     }
 
+    /**
+     *
+     * @return JsonArray containing "id": id, "lag": lagnamn
+     * returns null if fail
+     */
     public JsonArray getTeams() {
         try {
             Connection connection = ConnectionFactory.make("testserver");
@@ -192,6 +229,12 @@ public class SportsBean {
         return null;
     }
 
+    /**
+     *
+     * @param id Id of team (look database for all teams or call method *getTeams()*
+     * @return Returns JsonArray containing "lagnamn":teamname, "p":points ((maybe also id *TBD*))
+     * returns null if fail
+     */
     public JsonArray getTeam(int id) {
         try {
             Connection con = ConnectionFactory.make("testserver");
