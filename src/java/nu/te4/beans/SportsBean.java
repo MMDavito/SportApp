@@ -96,7 +96,7 @@ public class SportsBean {
                 return true;
             } catch (Exception e) {
                 
-                System.err.println("fuck off");
+                System.err.println("fuck off"+e.getMessage());
                 return false;
             }
         } else {
