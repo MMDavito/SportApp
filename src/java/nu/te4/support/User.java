@@ -20,6 +20,11 @@ import org.mindrot.jbcrypt.BCrypt;
  */
 public class User {
 
+    /**
+     *
+     * @param httpHeaders Base64 username:password 
+     * @return true if authoricatead, else false
+     */
     public static boolean authoricate(HttpHeaders httpHeaders) {
         try {
             List<String> authHeader = httpHeaders.getRequestHeader(HttpHeaders.AUTHORIZATION);
@@ -41,6 +46,12 @@ public class User {
         return false;
     }
 
+    /**
+     * creates user in database.
+     * @param username username
+     * @param password password
+     * @return true if createad, else false
+     */
     public static boolean createUser(String username, String password) {
         String hashedPW = BCrypt.hashpw(password, BCrypt.gensalt());
         try {
@@ -56,6 +67,13 @@ public class User {
         }
         return false;
     }
+
+    /**
+     * Checks if user excists in database
+     * @param username username
+     * @param password password
+     * @return true if authoricatead, else false.
+     */
     public static boolean checkUser(String username, String password){
         try {
             Connection con = ConnectionFactory.make("testserver");

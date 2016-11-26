@@ -22,12 +22,23 @@ import javax.ws.rs.core.Response;
 import nu.te4.beans.SportsBean;
 import nu.te4.support.User;
 
+/**
+ *
+ * @author daca97002
+ */
 @Path("/")
 public class SportService {
 
     @EJB
     SportsBean sportsbean;
 
+    /**
+     *
+     * @param httpHeaders login:information in basic64 format
+     * @return http-status 401 if fail to authoricate
+     * http-status 500:servererror if fail to retrive data from 
+     * else, if success: http-status 200: ok
+     */
     @GET
     @Path("games")
     @Produces(MediaType.APPLICATION_JSON)
@@ -42,6 +53,14 @@ public class SportService {
         return Response.ok(data).build();
     }
 
+    /**
+     *
+     * @param body JsonObject containing information about game, see EAPIS
+     * @param httpHeaders login:information in basic64 format
+     * @return http-status 401 if fail to authoricate
+     * http-status 400: Bad Request if fail in connection/querry/request
+     * http-status 201: Created if success
+     */
     @POST
     @Path("game")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -56,6 +75,14 @@ public class SportService {
         return Response.status(Response.Status.CREATED).build();
     }
 
+    /**
+     *
+     * @param id id of game wished to delete
+     * @param httpHeaders login:information in basic64 format
+     * @return http-status 401 if fail to authoricate
+     * http-status 400: Bad Request if bad request
+     * http-status 200:ok if success.
+     */
     @DELETE
     @Path("game/{id}")
     public Response deleteGame(@PathParam("id") int id, @Context HttpHeaders httpHeaders) {
@@ -68,6 +95,14 @@ public class SportService {
         return Response.ok().build();
     }
 
+    /**
+     *
+     * @param body information in JsonFormat (see EAPIS)
+     * @param httpHeaders login:information in basic64 format
+     * @return http-status 401 if fail to authoricate
+     * http-status 400: Bad Request if bad request
+     * http-status 201: Created if success, created in database
+     */
     @PUT
     @Path("game")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -81,6 +116,11 @@ public class SportService {
         return Response.status(Response.Status.CREATED).build();
     }
 
+    /**
+     *
+     * @return http-status 500: if server/database problem
+     * http-status 200: ok + data if ok (see EAPIS for data format)
+     */
     @GET
     @Path("table")
     @Produces(MediaType.APPLICATION_JSON)
@@ -92,10 +132,15 @@ public class SportService {
         return Response.ok(data).build();
     }
 
+    /**
+     *
+     * @return http-status 500 if server/database error, http-status 200: ok + 
+     * data if ok(see EAPIS for dataformat)
+     */
     @GET
     @Path("teams")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTeams(@Context HttpHeaders httpHeaders) {
+    public Response getTeams() {
 
         JsonArray data = sportsbean.getTeams();
         if (data == null) {
@@ -104,9 +149,15 @@ public class SportService {
         return Response.ok(data).build();
     }
 
+    /**
+     *
+     * @param id id of team requestead
+     * @return http-status 500 if server/database error, http-status 200: ok + 
+     * data if ok(see EAPIS for dataformat)
+     */
     @GET
     @Path("team/{id}")
-    public Response getTeam(@PathParam("id") int id, @Context HttpHeaders httpHeaders) {
+    public Response getTeam(@PathParam("id") int id) {
        
         JsonArray data = sportsbean.getTeam(id);
         if (data == null) {
