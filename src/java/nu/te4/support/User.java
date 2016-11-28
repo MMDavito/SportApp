@@ -41,7 +41,7 @@ public class User {
                 return true;
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Fel utavhelvete "+e.getMessage());
         }
         return false;
     }

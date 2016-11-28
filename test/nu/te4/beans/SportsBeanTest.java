@@ -115,14 +115,12 @@ public class SportsBeanTest {
         boolean result = instance.deleteGame(id);
         assertEquals(expResult, result);
         container.close();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
      * Test of changeGame method, of class SportsBean.
      */
-    @Test
+   /*@Test
     public void testChangeGame() throws Exception {
         System.out.println("changeGame");
         String body = "";
